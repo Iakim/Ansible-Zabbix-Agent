@@ -39,4 +39,4 @@
       line: 'Timeout=3'
 
   - name: Iniciando o Zabbix Agent
-    service: name=zabbix-agent state=started
+    service: name=zabbix-agent state=started enabled=yes
