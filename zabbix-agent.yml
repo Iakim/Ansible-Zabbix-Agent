@@ -1,0 +1,42 @@
+---
+- hosts: teste
+  remote_user: root
+  vars:
+    zabbix_server: "172.16.2.123"
+
+  tasks:
+  - name: Instalando o Zabbix Agent
+    yum: name=zabbix-agent state=latest
+
+  - lineinfile:
+      path: /etc/zabbix/zabbix_agentd.conf
+      regexp: '^LogFileSize=0'
+      line: 'LogFileSize=256'
+
+  - lineinfile:
+      path: /etc/zabbix/zabbix_agentd.conf
+      regexp: '^# EnableRemoteCommands=0'
+      line: 'EnableRemoteCommands=1'
+
+  - lineinfile:
+      path: /etc/zabbix/zabbix_agentd.conf
+      regexp: '^Server=127.0.0.1'
+      line: 'Server={{ zabbix_server }}'
+
+  - lineinfile:
+      path: /etc/zabbix/zabbix_agentd.conf
+      regexp: '^ServerActive=127.0.0.1'
+      line: 'ServerActive={{ zabbix_server }}'
+
+  - lineinfile:
+      path: /etc/zabbix/zabbix_agentd.conf
+      regexp: '^Hostname=Zabbix server'
+      line: 'Hostname={{ ansible_hostname }}'
+
+  - lineinfile:
+      path: /etc/zabbix/zabbix_agentd.conf
+      regexp: '^# Timeout=3'
+      line: 'Timeout=3'
+
+  - name: Iniciando o Zabbix Agent
+    service: name=zabbix-agent state=started
