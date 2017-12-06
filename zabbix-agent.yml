@@ -1,11 +1,11 @@
 ---
-- hosts: teste
+- hosts: test
   remote_user: root
   vars:
-    zabbix_server: "172.16.2.123"
+    zabbix_server: "10.20.19.47"
 
   tasks:
-  - name: Instalando o Zabbix Agent
+  - name: Installing the Zabbix Agent
     yum: name=zabbix-agent state=latest
 
   - lineinfile:
@@ -38,5 +38,5 @@
       regexp: '^# Timeout=3'
       line: 'Timeout=3'
 
-  - name: Iniciando o Zabbix Agent
+  - name: Starting the Zabbix Agent
     service: name=zabbix-agent state=started enabled=yes
